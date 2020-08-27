@@ -1,14 +1,20 @@
 {
-  "name": "zksync",
+  "name": "@quantik-solutions/numio-zksync",
   "version": "0.6.4",
   "license": "MIT",
+  "publishConfig": { "registry": "https://npm.pkg.github.com/Quantik-Solutions" },
+  "repository" : {
+    "type" : "git",
+    "url": "ssh://git@github.com:Quantik-Solutions/zksync.git",
+    "directory": "js/zksync/"
+  },
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "dependencies": {
     "axios": "^0.19.0",
     "websocket": "^1.0.30",
     "websocket-as-promised": "^0.10.1",
-    "zksync-crypto": "^0.3.1"
+    "@quantik-solutions/numio-zksync-crypto": "^0.3.1"
   },
   "peerDependencies": {
     "ethers": "^5.0.0"

@@ -1,15 +1,24 @@
 {
-	"name": "zksync-crypto",
+	"name": "@quantik-solutions/numio-zksync-crypto",
 	"version": "0.3.1",
-	"browser": "dist/zksync-crypto-bundler.js",
-	"main": "dist/zksync-crypto-node.js",
+	"react-native": {
+		"dist/zksync_crypto_asm_stub.js": "dist/zksync_crypto_asm.js"
+	},
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"publishConfig": { "registry": "https://npm.pkg.github.com/Quantik-Solutions" },
+	"repository" : {
+		"type" : "git",
+		"url": "ssh://git@github.com:Quantik-Solutions/zksync.git",
+		"directory": "js/zksync-crypto/"
+	},
 	"files": [
 		"dist/*.ts",
 		"dist/*.wasm",
 		"dist/*.js"
 	],
 	"scripts": {
-		"build": "./build.sh",
+		"build": "./build-package.sh",
 		"test": "f cargo test"
 	},
 	"dependencies": {
