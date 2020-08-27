@@ -11,5 +11,10 @@
 	"scripts": {
 		"build": "./build.sh",
 		"test": "f cargo test"
+	},
+	"dependencies": {
+		"@polkadot/util": "^3.3.1",
+		"add": "^2.0.6",
+		"yarn": "^1.22.4"
 	}
 }
