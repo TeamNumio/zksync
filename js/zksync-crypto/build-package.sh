@@ -12,6 +12,9 @@ WSM=build/zksync_crypto_bg.wasm
 OPT=build/zksync_crypto_opt.wasm
 ASM=build/zksync_crypto_asm.js
 
+which wasm-pack || cargo install wasm-pack
+which wasm-opt || cargo install wasm-opt
+
 echo "*** Building package"
 
 # cleanup old
@@ -29,7 +32,7 @@ wasm-opt $WSM -Os -o $OPT
 
 # convert wasm to base64 structure
 echo "*** Packing WASM into base64"
-node src/js/pack-wasm-base64.js
+node ./pack-wasm-base64.js
 
 # build asmjs version from the input (optimised) WASM
 echo "*** Building asm.js version"
@@ -99,3 +102,5 @@ echo "
 export function isReady(): boolean;
 export function waitReady(): Promise<boolean>;
 " >> $DEF
+
+rm build/package.json build/.gitignore

@@ -1,11 +1,7 @@
-// Copyright 2019-2020 @polkadot/wasm-crypto authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
 
-const pkg = require('./package.json');
 const asm = require('./zksync_crypto_asm_stub');
-const bytes = require('./wasm_wasm');
-const imports = require('./wasm');
+const bytes = require('./zksync_crypto_wasm');
+const imports = require('./zksync_crypto');
 
 module.exports = async function createExportPromise () {
     try {
@@ -18,7 +14,7 @@ module.exports = async function createExportPromise () {
             return asm;
         }
 
-        console.error(`ERROR: Unable to initialize ${pkg.name} ${pkg.version}`);
+        console.error(`ERROR: Unable to initialize zksync-crypto`);
         console.error(error);
 
         return null;

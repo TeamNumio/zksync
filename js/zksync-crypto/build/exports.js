@@ -6,6 +6,7 @@ module.exports = function (stubbed) {
     const wrapReady = (fn) =>
         (...params) => {
             assert(stubbed.isReady(), INIT_ERRROR);
+
             return fn(...params);
         };
 
