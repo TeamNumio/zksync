@@ -4,7 +4,7 @@ import { private_key_to_pubkey_hash, sign_musig } from "@quantik-solutions/numio
 import * as zks from "@quantik-solutions/numio-zksync-crypto";
 import { utils } from "ethers";
 
-export { privateKeyFromSeed } from "@quantik-solutions/numio-zksync-crypto";
+export { privateKeyFromSeed, waitReady, isReady } from "@quantik-solutions/numio-zksync-crypto";
 
 export function signTransactionBytes(privKey: Uint8Array, bytes: Uint8Array): Signature {
     // @ts-ignore
