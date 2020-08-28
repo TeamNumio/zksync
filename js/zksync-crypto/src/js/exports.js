@@ -1,11 +1,11 @@
 /* eslint-disable sort-keys */
 const { assert } = require('@polkadot/util');
-const INIT_ERRROR = 'The WASM interface has not been initialized. Ensure that you wait for the initialization Promise with waitReady() from @polkadot/wasm-crypto (or cryptoWaitReady() from @polkadot/util-crypto) before attempting to use WASM-only interfaces.';
+const INIT_ERRROR = 'The WASM interface has not been initialized. Ensure that you wait for the initialization Promise with waitReady() from zksync crypto before attempting to use WASM-only interfaces.';
 
 module.exports = function (stubbed) {
     const wrapReady = (fn) =>
         (...params) => {
-            assert(stubbed.isReady(), INIT_ERRROR);
+            assert(stubbed.isReady(), `fn: ${fn} ${INIT_ERRROR}`);
             return fn(...params);
         };
 

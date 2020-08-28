@@ -40,7 +40,7 @@ wasm2js --output $ASM $OPT
 
 # cleanup the generated asm, converting to cjs
 sed -i -e '/import {/d' $ASM
-echo "const imported = require('./wasm');
+echo "const imported = require('./zksync_crypto');
 $(cat $ASM)" > $ASM
 sed -i -e 's/{abort.*},memasmFunc/imported, memasmFunc/g' $ASM
 sed -i -e 's/export var /module\.exports\./g' $ASM
@@ -88,7 +88,7 @@ sed -i -e '/^wasm = wasmInstance/d' $SRC_WASM
 # construct our promise and add ready helpers (WASM)
 echo "module.exports.abort = function () { throw new Error('abort'); };
 
-const createPromise = require('./wasm_promise');
+const createPromise = require('./zksync_crypto_promise');
 const wasmPromise = createPromise().catch(() => null);
 
 module.exports.isReady = function () { return !!wasm; }

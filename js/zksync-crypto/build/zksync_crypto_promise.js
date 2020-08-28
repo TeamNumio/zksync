@@ -10,11 +10,11 @@ module.exports = async function createExportPromise () {
         return instance.exports;
     } catch (error) {
         // if we have a valid supplied asm.js, return that
-        if (asm && asm.ext_blake2b) {
+        if (asm && asm.zksync_crypto_init) {
             return asm;
         }
 
-        console.error(`ERROR: Unable to initialize zksync-crypto`);
+        console.error(`ERROR: Unable to instantiate WebAssembly & initialize zksync-crypto`);
         console.error(error);
 
         return null;

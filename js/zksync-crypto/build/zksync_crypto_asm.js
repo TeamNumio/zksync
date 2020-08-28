@@ -1,4 +1,4 @@
-const imported = require('./wasm');
+const imported = require('./zksync_crypto');
 
 function asmFunc(global, env, buffer) {
  var HEAP8 = new global.Int8Array(buffer);

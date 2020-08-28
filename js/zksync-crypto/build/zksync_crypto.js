@@ -156,7 +156,7 @@ module.exports.__wasm = wasm;
 
 module.exports.abort = function () { throw new Error('abort'); };
 
-const createPromise = require('./wasm_promise');
+const createPromise = require('./zksync_crypto_promise');
 const wasmPromise = createPromise().catch(() => null);
 
 module.exports.isReady = function () { return !!wasm; }
