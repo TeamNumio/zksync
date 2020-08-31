@@ -26,12 +26,16 @@ let zksyncCryptoLoaded = false;
 
 export async function loadZkSyncCrypto(wasmFileUrl?: string) {
     // Only runs in the browser
-    if ((zks as any).default) {
-        // @ts-ignore
-        const url = wasmFileUrl ? wasmFileUrl : zks.DefaultZksyncCryptoWasmURL;
-        if (!zksyncCryptoLoaded) {
-            await (zks as any).default(url);
-            zksyncCryptoLoaded = true;
-        }
-    }
+    // if ((zks as any).default) {
+    //     // @ts-ignore
+    //     const url = wasmFileUrl ? wasmFileUrl : zks.DefaultZksyncCryptoWasmURL;
+    //     if (!zksyncCryptoLoaded) {
+    //         await (zks as any).default(url);
+    //         zksyncCryptoLoaded = true;
+    //     }
+    // } else {
+        await zks.waitReady();
+        await zks.zksync_crypto_init();
+        zksyncCryptoLoaded = true;
+    // }
 }
