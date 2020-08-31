@@ -10,6 +10,7 @@ module.exports = async function createExportPromise () {
         return instance.exports;
     } catch (error) {
         // if we have a valid supplied asm.js, return that
+        console.log("asm", asm.zksync_crypto_init);
         if (asm && asm.zksync_crypto_init) {
             return asm;
         }
