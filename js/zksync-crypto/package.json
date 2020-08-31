@@ -1,8 +1,8 @@
 {
 	"name": "@quantik-solutions/numio-zksync-crypto",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"react-native": {
-		"build/zksync_crypto_asm_stub.js": "build/zksync_crypto_asm.js"
+		"./build/zksync_crypto_asm_stub.js": "./build/zksync_crypto_asm.js"
 	},
 	"main": "build/index.js",
 	"types": "build/index.d.ts",

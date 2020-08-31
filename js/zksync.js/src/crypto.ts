@@ -1,7 +1,7 @@
 import { Signature } from "./types";
 
 import { private_key_to_pubkey_hash, sign_musig } from "@quantik-solutions/numio-zksync-crypto";
-import * as zks from "@quantik-solutions/numio-zksync-crypto";
+//import { private_key_to_pubkey_hash, sign_musig } from "@quantik-solutions/numio-zksync-crypto/build/zksync_crypto_asm.js";
 import { utils } from "ethers";
 
 export { privateKeyFromSeed, waitReady, isReady } from "@quantik-solutions/numio-zksync-crypto";
@@ -34,8 +34,8 @@ export async function loadZkSyncCrypto(wasmFileUrl?: string) {
     //         zksyncCryptoLoaded = true;
     //     }
     // } else {
-        await zks.waitReady();
-        await zks.zksync_crypto_init();
+    //     await zks.waitReady();
+    //     await zks.zksync_crypto_init();
         zksyncCryptoLoaded = true;
     // }
 }
