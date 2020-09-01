@@ -1,10 +1,9 @@
-import { Signature } from "./types";
+import {Signature} from "./types";
 
-import { private_key_to_pubkey_hash, sign_musig } from "@quantik-solutions/numio-zksync-crypto";
-//import { private_key_to_pubkey_hash, sign_musig } from "@quantik-solutions/numio-zksync-crypto/build/zksync_crypto_asm.js";
-import { utils } from "ethers";
+import {private_key_to_pubkey_hash, sign_musig, waitReady} from "@quantik-solutions/numio-zksync-crypto";
+import {utils} from "ethers";
 
-export { privateKeyFromSeed, waitReady, isReady } from "@quantik-solutions/numio-zksync-crypto";
+export {privateKeyFromSeed} from "@quantik-solutions/numio-zksync-crypto";
 
 export function signTransactionBytes(privKey: Uint8Array, bytes: Uint8Array): Signature {
     // @ts-ignore
@@ -23,19 +22,10 @@ export function privateKeyToPubKeyHash(privateKey: Uint8Array): string {
 }
 
 let zksyncCryptoLoaded = false;
-
-export async function loadZkSyncCrypto(wasmFileUrl?: string) {
-    // Only runs in the browser
-    // if ((zks as any).default) {
-    //     // @ts-ignore
-    //     const url = wasmFileUrl ? wasmFileUrl : zks.DefaultZksyncCryptoWasmURL;
-    //     if (!zksyncCryptoLoaded) {
-    //         await (zks as any).default(url);
-    //         zksyncCryptoLoaded = true;
-    //     }
-    // } else {
-    //     await zks.waitReady();
-    //     await zks.zksync_crypto_init();
+export async function loadZkSyncCrypto() {
+    // This might bring some side effects
+    if (!zksyncCryptoLoaded) {
+        await waitReady();
         zksyncCryptoLoaded = true;
-    // }
+    }
 }
