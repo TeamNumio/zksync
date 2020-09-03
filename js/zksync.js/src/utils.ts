@@ -1,5 +1,5 @@
-import { utils, constants, ethers, BigNumber, BigNumberish } from "ethers";
-import { PubKeyHash, TokenAddress, TokenLike, Tokens, TokenSymbol, EthSignerType, Address } from "./types";
+import {constants, ethers, utils} from "ethers";
+import {Address, EthSignerType, PubKeyHash, TokenAddress, TokenLike, Tokens, TokenSymbol} from "./types";
 
 // Max number of tokens for the current version, it is determined by the zkSync circuit implementation.
 const MAX_NUMBER_OF_TOKENS = 128;
@@ -18,7 +18,7 @@ export const MAX_ERC20_APPROVE_AMOUNT =
 
 export const ERC20_APPROVE_TRESHOLD = "57896044618658097711785492504343953926634992332820282019728792003956564819968"; // 2^255
 
-export const ERC20_DEPOSIT_GAS_LIMIT = BigNumber.from("300000"); // 300k
+export const ERC20_DEPOSIT_GAS_LIMIT = utils.bigNumberify("300000"); // 300k
 
 const AMOUNT_EXPONENT_BIT_WIDTH = 5;
 const AMOUNT_MANTISSA_BIT_WIDTH = 35;
@@ -30,24 +30,24 @@ export function floatToInteger(
     expBits: number,
     mantissaBits: number,
     expBaseNumber: number
-): BigNumber {
+): utils.BigNumber {
     if (floatBytes.length * 8 !== mantissaBits + expBits) {
         throw new Error("Float unpacking, incorrect input length");
     }
 
     const bits = buffer2bitsBE(floatBytes).reverse();
-    let exponent = BigNumber.from(0);
-    let expPow2 = BigNumber.from(1);
+    let exponent = utils.bigNumberify(0);
+    let expPow2 = utils.bigNumberify(1);
     for (let i = 0; i < expBits; i++) {
         if (bits[i] === 1) {
             exponent = exponent.add(expPow2);
         }
         expPow2 = expPow2.mul(2);
     }
-    exponent = BigNumber.from(expBaseNumber).pow(exponent);
+    exponent = utils.bigNumberify(expBaseNumber).pow(exponent);
 
-    let mantissa = BigNumber.from(0);
-    let mantissaPow2 = BigNumber.from(1);
+    let mantissa = utils.bigNumberify(0);
+    let mantissaPow2 = utils.bigNumberify(1);
     for (let i = expBits; i < expBits + mantissaBits; i++) {
         if (bits[i] === 1) {
             mantissa = mantissa.add(mantissaPow2);
@@ -107,13 +107,13 @@ function numberToBits(integer: number, bits: number): number[] {
 }
 
 export function integerToFloat(
-    integer: BigNumber,
+    integer: utils.BigNumber,
     exp_bits: number,
     mantissa_bits: number,
     exp_base: number
 ): Uint8Array {
-    const max_exponent = BigNumber.from(10).pow(Math.pow(2, exp_bits) - 1);
-    const max_mantissa = BigNumber.from(2)
+    const max_exponent = utils.bigNumberify(10).pow(Math.pow(2, exp_bits) - 1);
+    const max_mantissa = utils.bigNumberify(2)
         .pow(mantissa_bits)
         .sub(1);
 
@@ -150,22 +150,22 @@ export function reverseBits(buffer: Uint8Array): Uint8Array {
     return reversed;
 }
 
-function packAmount(amount: BigNumber): Uint8Array {
+function packAmount(amount: utils.BigNumber): Uint8Array {
     return reverseBits(integerToFloat(amount, AMOUNT_EXPONENT_BIT_WIDTH, AMOUNT_MANTISSA_BIT_WIDTH, 10));
 }
 
-function packFee(amount: BigNumber): Uint8Array {
+function packFee(amount: utils.BigNumber): Uint8Array {
     return reverseBits(integerToFloat(amount, FEE_EXPONENT_BIT_WIDTH, FEE_MANTISSA_BIT_WIDTH, 10));
 }
 
-export function packAmountChecked(amount: BigNumber): Uint8Array {
+export function packAmountChecked(amount: utils.BigNumber): Uint8Array {
     if (closestPackableTransactionAmount(amount.toString()).toString() !== amount.toString()) {
         throw new Error("Transaction Amount is not packable");
     }
     return packAmount(amount);
 }
 
-export function packFeeChecked(amount: BigNumber): Uint8Array {
+export function packFeeChecked(amount: utils.BigNumber): Uint8Array {
     if (closestPackableTransactionFee(amount.toString()).toString() !== amount.toString()) {
         throw new Error("Fee Amount is not packable");
     }
@@ -177,12 +177,12 @@ export function packFeeChecked(amount: BigNumber): Uint8Array {
  * e.g 1000000003 => 1000000000
  * @param amount
  */
-export function closestPackableTransactionAmount(amount: BigNumberish): BigNumber {
-    const packedAmount = packAmount(BigNumber.from(amount));
+export function closestPackableTransactionAmount(amount: utils.BigNumberish): utils.BigNumber {
+    const packedAmount = packAmount(utils.bigNumberify(amount));
     return floatToInteger(packedAmount, AMOUNT_EXPONENT_BIT_WIDTH, AMOUNT_MANTISSA_BIT_WIDTH, 10);
 }
 
-export function isTransactionAmountPackable(amount: BigNumberish): boolean {
+export function isTransactionAmountPackable(amount: utils.BigNumberish): boolean {
     return closestPackableTransactionAmount(amount).eq(amount);
 }
 
@@ -191,12 +191,12 @@ export function isTransactionAmountPackable(amount: BigNumberish): boolean {
  * e.g 1000000003 => 1000000000
  * @param fee
  */
-export function closestPackableTransactionFee(fee: BigNumberish): BigNumber {
-    const packedFee = packFee(BigNumber.from(fee));
+export function closestPackableTransactionFee(fee: utils.BigNumberish): utils.BigNumber {
+    const packedFee = packFee(utils.bigNumberify(fee));
     return floatToInteger(packedFee, FEE_EXPONENT_BIT_WIDTH, FEE_MANTISSA_BIT_WIDTH, 10);
 }
 
-export function isTransactionFeePackable(amount: BigNumberish): boolean {
+export function isTransactionFeePackable(amount: utils.BigNumberish): boolean {
     return closestPackableTransactionFee(amount).eq(amount);
 }
 
@@ -252,12 +252,12 @@ export class TokenSet {
         return isTransactionFeePackable(parsedAmount);
     }
 
-    public formatToken(tokenLike: TokenLike, amount: BigNumberish): string {
+    public formatToken(tokenLike: TokenLike, amount: utils.BigNumberish): string {
         const decimals = this.resolveTokenDecimals(tokenLike);
         return utils.formatUnits(amount, decimals);
     }
 
-    public parseToken(tokenLike: TokenLike, amount: string): BigNumber {
+    public parseToken(tokenLike: TokenLike, amount: string): utils.BigNumber {
         const decimals = this.resolveTokenDecimals(tokenLike);
         return utils.parseUnits(amount, decimals);
     }
@@ -283,16 +283,14 @@ export function getChangePubkeyMessage(pubKeyHash: PubKeyHash, nonce: number, ac
     const msgNonce = utils.hexlify(serializeNonce(nonce));
     const msgAccId = utils.hexlify(serializeAccountId(accountId));
     const pubKeyHashHex = pubKeyHash.replace("sync:", "").toLowerCase();
-    const message =
-        `Register zkSync pubkey:\n\n` +
+    return `Register zkSync pubkey:\n\n` +
         `${pubKeyHashHex}\n` +
         `nonce: ${msgNonce}\n` +
         `account id: ${msgAccId}\n\n` +
         `Only sign this message for a trusted client!`;
-    return message;
 }
 
-export function getSignedBytesFromMessage(message: utils.BytesLike | string, addPrefix: boolean): Uint8Array {
+export function getSignedBytesFromMessage(message: utils.Arrayish | string, addPrefix: boolean): Uint8Array {
     let messageBytes = typeof message === "string" ? utils.toUtf8Bytes(message) : utils.arrayify(message);
     if (addPrefix) {
         messageBytes = utils.concat([
@@ -405,17 +403,17 @@ export function serializeTokenId(tokenId: number): Uint8Array {
     return numberToBytesBE(tokenId, 2);
 }
 
-export function serializeAmountPacked(amount: BigNumberish): Uint8Array {
-    return packAmountChecked(BigNumber.from(amount));
+export function serializeAmountPacked(amount: utils.BigNumberish): Uint8Array {
+    return packAmountChecked(utils.bigNumberify(amount));
 }
 
-export function serializeAmountFull(amount: BigNumberish): Uint8Array {
-    const bnAmount = BigNumber.from(amount);
-    return utils.zeroPad(utils.arrayify(bnAmount), 16);
+export function serializeAmountFull(amount: utils.BigNumberish): Uint8Array {
+    const bnAmount = utils.bigNumberify(amount);
+    return utils.padZeros(utils.arrayify(bnAmount), 16);
 }
 
-export function serializeFeePacked(fee: BigNumberish): Uint8Array {
-    return packFeeChecked(BigNumber.from(fee));
+export function serializeFeePacked(fee: utils.BigNumberish): Uint8Array {
+    return packFeeChecked(utils.bigNumberify(fee));
 }
 
 export function serializeNonce(nonce: number): Uint8Array {

@@ -1,5 +1,5 @@
 import { privateKeyFromSeed, signTransactionBytes, privateKeyToPubKeyHash } from "./crypto";
-import { BigNumber, BigNumberish, ethers } from "ethers";
+import { ethers, utils } from "ethers";
 import {
     getEthSignatureType,
     signMessagePersonalAPI,
@@ -30,8 +30,8 @@ export class Signer {
         from: Address;
         to: Address;
         tokenId: number;
-        amount: BigNumberish;
-        fee: BigNumberish;
+        amount: utils.BigNumberish;
+        fee: utils.BigNumberish;
         nonce: number;
     }): Transfer {
         const type = new Uint8Array([5]); // tx type
@@ -52,8 +52,8 @@ export class Signer {
             from: transfer.from,
             to: transfer.to,
             token: transfer.tokenId,
-            amount: BigNumber.from(transfer.amount).toString(),
-            fee: BigNumber.from(transfer.fee).toString(),
+            amount: utils.bigNumberify(transfer.amount).toString(),
+            fee: utils.bigNumberify(transfer.fee).toString(),
             nonce: transfer.nonce,
             signature
         };
@@ -64,8 +64,8 @@ export class Signer {
         from: Address;
         ethAddress: string;
         tokenId: number;
-        amount: BigNumberish;
-        fee: BigNumberish;
+        amount: utils.BigNumberish;
+        fee: utils.BigNumberish;
         nonce: number;
     }): Withdraw {
         const typeBytes = new Uint8Array([3]);
@@ -93,8 +93,8 @@ export class Signer {
             from: withdraw.from,
             to: withdraw.ethAddress,
             token: withdraw.tokenId,
-            amount: BigNumber.from(withdraw.amount).toString(),
-            fee: BigNumber.from(withdraw.fee).toString(),
+            amount: utils.bigNumberify(withdraw.amount).toString(),
+            fee: utils.bigNumberify(withdraw.fee).toString(),
             nonce: withdraw.nonce,
             signature
         };

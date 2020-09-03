@@ -1,4 +1,4 @@
-import { BigNumber, BigNumberish } from "ethers";
+import {utils} from "ethers";
 
 // 0x-prefixed, hex encoded, ethereum account address
 export type Address = string;
@@ -22,7 +22,7 @@ export interface AccountState {
             // Token are indexed by their symbol (e.g. "ETH")
             [token: string]: {
                 // Sum of pending deposits for the token.
-                amount: BigNumberish;
+                amount: utils.BigNumberish;
                 // Value denoting the block number when the funds are expected
                 // to be received by zkSync network.
                 expectedAcceptBlock: number;
@@ -32,7 +32,7 @@ export interface AccountState {
     committed: {
         balances: {
             // Token are indexed by their symbol (e.g. "ETH")
-            [token: string]: BigNumberish;
+            [token: string]: utils.BigNumberish;
         };
         nonce: number;
         pubKeyHash: PubKeyHash;
@@ -40,7 +40,7 @@ export interface AccountState {
     verified: {
         balances: {
             // Token are indexed by their symbol (e.g. "ETH")
-            [token: string]: BigNumberish;
+            [token: string]: utils.BigNumberish;
         };
         nonce: number;
         pubKeyHash: PubKeyHash;
@@ -70,8 +70,8 @@ export interface Transfer {
     from: Address;
     to: Address;
     token: number;
-    amount: BigNumberish;
-    fee: BigNumberish;
+    amount: utils.BigNumberish;
+    fee: utils.BigNumberish;
     nonce: number;
     signature: Signature;
 }
@@ -82,8 +82,8 @@ export interface Withdraw {
     from: Address;
     to: Address;
     token: number;
-    amount: BigNumberish;
-    fee: BigNumberish;
+    amount: utils.BigNumberish;
+    fee: utils.BigNumberish;
     nonce: number;
     signature: Signature;
 }
@@ -146,13 +146,13 @@ export interface Fee {
     // Operation type (amount of chunks in operation differs and impacts the total fee).
     feeType: "Withdraw" | "Transfer" | "TransferToNew";
     // Amount of gas used by transaction
-    gasTxAmount: BigNumber;
+    gasTxAmount: utils.BigNumberish;
     // Gas price (in wei)
-    gasPriceWei: BigNumber;
+    gasPriceWei: utils.BigNumberish;
     // Ethereum gas part of fee (in wei)
-    gasFee: BigNumber;
+    gasFee: utils.BigNumberish;
     // Zero-knowledge proof part of fee (in wei)
-    zkpFee: BigNumber;
+    zkpFee: utils.BigNumberish;
     // Total fee amount (in wei)
-    totalFee: BigNumber;
+    totalFee: utils.BigNumberish;
 }

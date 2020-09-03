@@ -1,6 +1,6 @@
 {
   "name": "@quantik-solutions/numio-zksync",
-  "version": "0.0.8",
+  "version": "0.0.10",
   "license": "MIT",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/Quantik-Solutions"
@@ -17,9 +17,6 @@
     "websocket-as-promised": "^0.10.1",
     "@quantik-solutions/numio-zksync-crypto": "0.0.6"
   },
-  "peerDependencies": {
-    "ethers": "^5.0.0"
-  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^15.0.0",
     "@rollup/plugin-json": "^4.1.0",
@@ -28,7 +25,7 @@
     "@types/mocha": "^5.2.7",
     "@types/node": "^12.6.8",
     "chai": "^4.2.0",
-    "ethers": "^5.0.0",
+    "ethers": "^4.0.48",
     "mocha": "^6.2.0",
     "prettier": "1.18.2",
     "rollup": "^2.26.3",
