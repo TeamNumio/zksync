@@ -204,13 +204,10 @@ fn main() {
     let prover_options = ProverOptions::from_env();
     start_prover_server(
         connection_pool.clone(),
-        config_opts.prover_server_address,
         prover_options.gone_timeout,
         prover_options.prepare_data_interval,
         stop_signal_sender,
-        observer_mode_final_state.circuit_acc_tree,
-        observer_mode_final_state.circuit_tree_block,
-        config_opts.idle_provers,
+        config_opts.clone(),
     );
 
     let mempool_task = run_mempool_task(
@@ -227,7 +224,7 @@ fn main() {
     );
 
     let ticker_task = run_ticker_task(
-        config_opts.ticker_url.clone(),
+        config_opts.token_price_source.clone(),
         connection_pool.clone(),
         eth_send_request_sender,
         state_keeper_req_sender,
