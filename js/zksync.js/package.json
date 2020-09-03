@@ -1,13 +1,13 @@
 {
-  "name": "@quantik-solutions/numio-zksync",
-  "version": "0.0.10",
+  "name": "@teamnumio/numio-zksync",
+  "version": "0.0.1",
   "license": "MIT",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/Quantik-Solutions"
+    "registry": "https://npm.pkg.github.com/TeamNumio"
   },
   "repository": {
     "type": "git",
-    "url": "ssh://git@github.com:Quantik-Solutions/zksync.git"
+    "url": "ssh://git@github.com:TeamNumio/zksync.git"
   },
   "main": "build/index.js",
   "types": "build/index.d.ts",
