@@ -1,28 +1,28 @@
 {
-	"name": "@teamnumio/numio-zksync",
-	"version": "0.0.1",
-	"react-native": {
-		"./build/zksync_crypto_asm_stub.js": "./build/zksync_crypto_asm.js"
-	},
-	"main": "build/index.js",
-	"types": "build/index.d.ts",
-	"publishConfig": {
-		"registry": "https://npm.pkg.github.com/TeamNumio"
-	},
-	"repository": {
-		"type": "git",
-		"url": "ssh://git@github.com:TeamNumio/zksync.git"
-	},
-	"files": [
-		"build/*"
-	],
-	"scripts": {
-		"build": "./build-package.sh",
-		"test": "f cargo test"
-	},
-	"dependencies": {
-		"@polkadot/util": "^3.3.1",
-		"add": "^2.0.6",
-		"yarn": "^1.22.4"
-	}
+  "name": "@teamnumio/zksync-crypto",
+  "version": "0.0.1",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/TeamNumio"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com:TeamNumio/zksync.git"
+  },
+  "files": [
+    "build/*"
+  ],
+  "scripts": {
+    "build": "./build-package.sh",
+    "test": "f cargo test"
+  },
+  "dependencies": {
+    "@polkadot/util": "^3.3.1",
+    "add": "^2.0.6",
+    "yarn": "^1.22.4"
+  },
+  "react-native": {
+    "./build/zksync_crypto_asm_stub.js": "./build/zksync_crypto_asm.js"
+  }
 }
