@@ -1,5 +1,5 @@
 import { AbstractJSONRPCTransport, HTTPTransport, WSTransport } from "./transport";
-import { ethers, Contract, utils } from "ethers";
+import { ethers, Contract, BigNumber } from "ethers";
 import {
     AccountState,
     Address,
@@ -165,11 +165,11 @@ export class Provider {
         const transactionFee = await this.transport.request("get_tx_fee", [txType, address.toString(), tokenLike]);
         return {
             feeType: transactionFee.feeType,
-            gasTxAmount: utils.bigNumberify(transactionFee.gasTxAmount),
-            gasPriceWei: utils.bigNumberify(transactionFee.gasPriceWei),
-            gasFee: utils.bigNumberify(transactionFee.gasFee),
-            zkpFee: utils.bigNumberify(transactionFee.zkpFee),
-            totalFee: utils.bigNumberify(transactionFee.totalFee)
+            gasTxAmount: BigNumber.from(transactionFee.gasTxAmount),
+            gasPriceWei: BigNumber.from(transactionFee.gasPriceWei),
+            gasFee: BigNumber.from(transactionFee.gasFee),
+            zkpFee: BigNumber.from(transactionFee.zkpFee),
+            totalFee: BigNumber.from(transactionFee.totalFee)
         };
     }
 

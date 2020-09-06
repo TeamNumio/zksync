@@ -1,13 +1,13 @@
 {
-  "name": "@teamnumio/numio-zksync",
-  "version": "0.0.1",
+  "name": "@quantik-solutions/numio-zksync",
+  "version": "0.0.12",
   "license": "MIT",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/TeamNumio"
+    "registry": "https://npm.pkg.github.com/Quantik-Solutions"
   },
   "repository": {
     "type": "git",
-    "url": "ssh://git@github.com:TeamNumio/zksync.git"
+    "url": "ssh://git@github.com:Quantik-Solutions/zksync.git"
   },
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -25,7 +25,7 @@
     "@types/mocha": "^5.2.7",
     "@types/node": "^12.6.8",
     "chai": "^4.2.0",
-    "ethers": "^4.0.48",
+    "ethers": "^5.0.10",
     "mocha": "^6.2.0",
     "prettier": "1.18.2",
     "rollup": "^2.26.3",

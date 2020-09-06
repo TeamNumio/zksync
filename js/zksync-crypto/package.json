@@ -1,6 +1,6 @@
 {
 	"name": "@teamnumio/numio-zksync",
-	"version": "0.0.1",
+	"version": "0.0.11",
 	"react-native": {
 		"./build/zksync_crypto_asm_stub.js": "./build/zksync_crypto_asm.js"
 	},

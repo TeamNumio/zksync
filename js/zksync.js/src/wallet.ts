@@ -1,4 +1,4 @@
-import { Contract, ContractTransaction, ethers, utils } from "ethers";
+import { BigNumber, BigNumberish, Contract, ContractTransaction, ethers } from "ethers";
 import { ETHProxy, Provider } from "./provider";
 import { Signer } from "./signer";
 import {
@@ -98,8 +98,8 @@ export class Wallet {
     async signSyncTransfer(transfer: {
         to: Address;
         token: TokenLike;
-        amount: utils.BigNumberish;
-        fee: utils.BigNumberish;
+        amount: BigNumberish;
+        fee: BigNumberish;
         nonce: number;
     }): Promise<SignedTransaction> {
         if (!this.signer) {
@@ -141,8 +141,8 @@ export class Wallet {
     async syncTransfer(transfer: {
         to: Address;
         token: TokenLike;
-        amount: utils.BigNumberish;
-        fee?: utils.BigNumberish;
+        amount: BigNumberish;
+        fee?: BigNumberish;
         nonce?: Nonce;
     }): Promise<Transaction> {
         transfer.nonce = transfer.nonce != null ? await this.getNonce(transfer.nonce) : await this.getNonce();
@@ -158,8 +158,8 @@ export class Wallet {
     async signWithdrawFromSyncToEthereum(withdraw: {
         ethAddress: string;
         token: TokenLike;
-        amount: utils.BigNumberish;
-        fee: utils.BigNumberish;
+        amount: BigNumberish;
+        fee: BigNumberish;
         nonce: number;
     }): Promise<SignedTransaction> {
         if (!this.signer) {
@@ -201,8 +201,8 @@ export class Wallet {
     async withdrawFromSyncToEthereum(withdraw: {
         ethAddress: string;
         token: TokenLike;
-        amount: utils.BigNumberish;
-        fee?: utils.BigNumberish;
+        amount: BigNumberish;
+        fee?: BigNumberish;
         nonce?: Nonce;
     }): Promise<Transaction> {
         withdraw.nonce = withdraw.nonce != null ? await this.getNonce(withdraw.nonce) : await this.getNonce();
@@ -299,7 +299,7 @@ export class Wallet {
             this.ethSigner
         );
 
-        let gasLimit = utils.bigNumberify("200000");
+        let gasLimit = BigNumber.from("200000");
         return mainZkSyncContract.setAuthPubkeyHash(newPubKeyHash.replace("sync:", "0x"), numNonce, {
             gasLimit: gasLimit,
             ...ethTxOptions
@@ -330,7 +330,7 @@ export class Wallet {
         return this.provider.getState(this.address());
     }
 
-    async getBalance(token: TokenLike, type: "committed" | "verified" = "committed"): Promise<utils.BigNumberish> {
+    async getBalance(token: TokenLike, type: "committed" | "verified" = "committed"): Promise<BigNumber> {
         const accountState = await this.getAccountState();
         const tokenSymbol = this.provider.tokenSet.resolveTokenSymbol(token);
         let balance;
@@ -339,11 +339,11 @@ export class Wallet {
         } else {
             balance = accountState.verified.balances[tokenSymbol] || "0";
         }
-        return utils.bigNumberify(balance);
+        return BigNumber.from(balance);
     }
 
-    async getEthereumBalance(token: TokenLike): Promise<utils.BigNumberish> {
-        let balance: utils.BigNumberish;
+    async getEthereumBalance(token: TokenLike): Promise<BigNumber> {
+        let balance: BigNumber;
         if (isTokenETH(token)) {
             balance = await this.ethSigner.provider.getBalance(this.cachedAddress);
         } else {
@@ -367,7 +367,7 @@ export class Wallet {
             this.address(),
             this.provider.contractAddress.mainContract
         );
-        return utils.bigNumberify(currentAllowance).gte(ERC20_APPROVE_TRESHOLD);
+        return BigNumber.from(currentAllowance).gte(ERC20_APPROVE_TRESHOLD);
     }
 
     async approveERC20TokenDeposits(token: TokenLike): Promise<ContractTransaction> {
@@ -383,7 +383,7 @@ export class Wallet {
     async depositToSyncFromEthereum(deposit: {
         depositTo: Address;
         token: TokenLike;
-        amount: utils.BigNumberish;
+        amount: BigNumberish;
         ethTxOptions?: ethers.providers.TransactionRequest;
         approveDepositAmountForERC20?: boolean;
     }): Promise<ETHOperation> {
@@ -399,8 +399,8 @@ export class Wallet {
 
         if (isTokenETH(deposit.token)) {
             ethTransaction = await mainZkSyncContract.depositETH(deposit.depositTo, {
-                value: utils.bigNumberify(deposit.amount),
-                gasLimit: utils.bigNumberify("200000"),
+                value: BigNumber.from(deposit.amount),
+                gasLimit: BigNumber.from("200000"),
                 gasPrice,
                 ...deposit.ethTxOptions
             });
@@ -432,7 +432,7 @@ export class Wallet {
             if (txRequest.gasLimit == null) {
                 const gasEstimate = await mainZkSyncContract.estimateGas
                     .depositERC20(...args)
-                    .then(estimate => estimate, _err => utils.bigNumberify("0"));
+                    .then(estimate => estimate, _err => BigNumber.from("0"));
                 txRequest.gasLimit = gasEstimate.gte(ERC20_DEPOSIT_GAS_LIMIT) ? gasEstimate : ERC20_DEPOSIT_GAS_LIMIT;
                 args[args.length - 1] = txRequest;
             }
@@ -472,7 +472,7 @@ export class Wallet {
 
         const tokenAddress = this.provider.tokenSet.resolveTokenAddress(withdraw.token);
         const ethTransaction = await mainZkSyncContract.fullExit(accountId, tokenAddress, {
-            gasLimit: utils.bigNumberify("500000"),
+            gasLimit: BigNumber.from("500000"),
             gasPrice,
             ...withdraw.ethTxOptions
         });
@@ -495,7 +495,7 @@ export class Wallet {
 class ETHOperation {
     state: "Sent" | "Mined" | "Committed" | "Verified" | "Failed";
     error?: ZKSyncTxError;
-    priorityOpId?: utils.BigNumberish;
+    priorityOpId?: BigNumber;
 
     constructor(public ethTx: ContractTransaction, public zkSyncProvider: Provider) {
         this.state = "Sent";
@@ -508,8 +508,8 @@ class ETHOperation {
         for (const log of txReceipt.logs) {
             try {
                 const priorityQueueLog = SYNC_MAIN_CONTRACT_INTERFACE.parseLog(log);
-                if (priorityQueueLog && priorityQueueLog.values.args.serialId != null) {
-                    this.priorityOpId = priorityQueueLog.values.args.serialId;
+                if (priorityQueueLog && priorityQueueLog.args.serialId != null) {
+                    this.priorityOpId = priorityQueueLog.args.serialId;
                 }
                 // tslint:disable-next-line:no-empty
             } catch {}
@@ -527,10 +527,7 @@ class ETHOperation {
 
         await this.awaitEthereumTxCommit();
         if (this.state !== "Mined") return;
-        let receipt;
-        if (this.priorityOpId instanceof utils.BigNumber) {
-            receipt = await this.zkSyncProvider.notifyPriorityOp(this.priorityOpId.toNumber(), "COMMIT");
-        }
+        const receipt = await this.zkSyncProvider.notifyPriorityOp(this.priorityOpId.toNumber(), "COMMIT");
 
         if (!receipt.executed) {
             this.setErrorState(new ZKSyncTxError("Priority operation failed", receipt));
@@ -544,12 +541,7 @@ class ETHOperation {
     async awaitVerifyReceipt(): Promise<PriorityOperationReceipt> {
         await this.awaitReceipt();
         if (this.state !== "Committed") return;
-        let receipt;
-
-        if (this.priorityOpId instanceof utils.BigNumber) {
-            receipt = await this.zkSyncProvider.notifyPriorityOp(this.priorityOpId.toNumber(), "VERIFY");
-        }
-
+        const receipt = await this.zkSyncProvider.notifyPriorityOp(this.priorityOpId.toNumber(), "VERIFY");
         this.state = "Verified";
 
         return receipt;
