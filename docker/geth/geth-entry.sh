@@ -38,9 +38,12 @@ exec geth --networkid 9 --mine --minerthreads 1 \
     --datadir "." \
     --nodiscover \
     --rpc --rpcaddr "0.0.0.0" \
-    --rpccorsdomain "*" --nat "any" --rpcapi eth,web3,personal,net \
+    --rpccorsdomain '*' --nat any --rpcapi eth,web3,personal,net \
     --unlock 0 --password "./password.sec" --allow-insecure-unlock \
     --ws --wsport 8546 \
+    --wsaddr "0.0.0.0" --maxpeers 25 \
+    --wsapi eth,web3,personal,net \
     --gcmode archive \
     --wsorigins "*" --rpcvhosts=* \
+    --verbosity 4 \
     --miner.gastarget=10000000 --miner.gaslimit=11000000

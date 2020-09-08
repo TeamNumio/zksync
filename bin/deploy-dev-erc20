@@ -2,5 +2,6 @@
 
 . .setup_env
 cd contracts/
-echo "Deploying ERC20 token for localhost"
-yarn --silent deploy-dev-erc20 > $ZKSYNC_HOME/etc/tokens/localhost.json
+echo "Deploying ERC20 token for localhosts"
+#yarn --verbose  deploy-dev-erc20 
+yarn  --silent deploy-dev-erc20 > $ZKSYNC_HOME/etc/tokens/localhost.json

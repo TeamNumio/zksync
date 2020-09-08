@@ -7,7 +7,7 @@ import {
     isTransactionFeePackable,
     TokenSet
 } from "../src/utils";
-import { pedersenHash } from "../src/crypto";
+//import { pedersenHash } from "../src/crypto";
 import { bigNumberify } from "ethers/utils";
 
 describe("Packing and unpacking", function() {
@@ -39,6 +39,7 @@ describe("Packing and unpacking", function() {
     });
 });
 
+/*
 describe("Pedersen hash", function() {
     it("Test empty input", function() {
         let input = Buffer.from(new Array(0));
@@ -192,7 +193,8 @@ describe("Pedersen hash", function() {
         expect(resultPoint.getY().eq(expectedY)).equal(true);
     });
 });
-
+*/
+/*
 describe("Token cache resolve", function() {
     it("Test token cache resolve", function() {
         const tokens = {
@@ -237,3 +239,4 @@ describe("Token cache resolve", function() {
         expect(() => tokenCache.resolveTokenId("ERC20-2")).to.throw();
     });
 });
+*/

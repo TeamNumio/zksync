@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "yarn copy_config && vue-cli-service serve --port=8080",
+    "serve": "yarn copy_config && vue-cli-service serve --port=8080 --fix",
+    "help": "which vue-cli-service",
     "build": "yarn copy_config && vue-cli-service build",
     "copy_config": "cp ../env-config.js src/",
     "set_token_name": "psql --host=localhost --user=postgres --dbname=plasma --command=\"update tokens set symbol='FAU' where id=1\"",
