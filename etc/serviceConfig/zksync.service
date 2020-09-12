@@ -1,0 +1,20 @@
+[Unit]
+Description=zkSync server
+After=network.target
+
+[Service]
+Type=simple
+User=ec2-user
+Group=ec2-user
+WorkingDirectory=/home/ec2-user/zksync/bin/
+ExecStart=/bin/bash --login -c 'source /home/ec2-user/.bashrc; zksync server'
+ExecStop=/bin/bash --login -c 'source /home/ec2-user/.bashrc; /usr/bin/pkill -u ec2-user -f server'
+KillMode=process
+RestartSec=3000
+KillSignal=SIGQUIT
+TimeoutStopSec=5
+KillMode=process
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

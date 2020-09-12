@@ -10,6 +10,7 @@ services:
       target: /var/lib/postgresql/data
     environment:
         - POSTGRES_HOST_AUTH_METHOD=trust
+    network_mode: "host"
   geth:
     image: "matterlabs/geth:latest"
     ports:
@@ -19,10 +20,12 @@ services:
     - type: bind
       source: ./volumes/geth
       target: /var/lib/geth/data
+    network_mode: "host"
   dev-ticker:
     image: "matterlabs/dev-ticker:latest"
     ports:
       - "9876:9876"
+    network_mode: "host"
   tesseracts:
     image: "adria0/tesseracts"
     command: --cfg /tesseracts.toml -vvv
@@ -33,3 +36,4 @@ services:
     - type: bind
       source: ./volumes/tesseracts
       target: /var/lib/tesseracts/data
+    network_mode: "host"
