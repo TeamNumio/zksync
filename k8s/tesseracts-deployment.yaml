@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml -o k8s
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: tesseracts
+  name: tesseracts
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: tesseracts
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o k8s
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: tesseracts
+    spec:
+      containers:
+      - args:
+        - --cfg
+        - /tesseracts.toml
+        - -vvv
+        image: adria0/tesseracts
+        imagePullPolicy: "Always"
+        name: tesseracts
+        ports:
+        - containerPort: 8000
+        resources: {}
+        volumeMounts:
+        - mountPath: /tesseracts.toml
+          name: tesseracts-toml
+        - mountPath: /var/lib/tesseracts/data
+          name: tesseracts-claim1
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+      - name: "tesseracts-toml"
+        configMap:
+          - name: "tesseracts-config"
+      - name: tesseracts-claim1
+        persistentVolumeClaim:
+          claimName: tesseracts-claim1
+status: {}

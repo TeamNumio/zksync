@@ -14,7 +14,7 @@ export CI_DOCKER_IMAGE ?= matterlabs/ci
 
 # Check and change environment (listed here for autocomplete and documentation only)
 # next two target are hack that allows to pass arguments to makefile
-env:	
+env:
 	@bin/zkenv $(filter-out $@,$(MAKECMDGOALS))
 %:
 	@:
@@ -45,7 +45,7 @@ rust-checks:
 
 # Database tools
 
-sql = psql "$(DATABASE_URL)" -c 
+sql = psql "$(DATABASE_URL)" -c
 
 db-test:
 	@bin/db-test.sh reset
@@ -162,7 +162,7 @@ prepare-contracts:
 
 ci-check:
 	@ci-check.sh
-	
+
 integration-testkit:
 	@bin/integration-testkit.sh
 
@@ -284,3 +284,6 @@ push-image-dev-ticker: image-dev-ticker
 
 api-type-validate:
 	@cd js/tests && yarn && yarn api-type-validate --test
+
+k8-load-configmaps:
+	 kubectl create configmap tesseracts-config --from-file=./etc/tesseracts/tesseracts.toml
