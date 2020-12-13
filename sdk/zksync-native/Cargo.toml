@@ -22,7 +22,7 @@ jni = { version = "0.17.0", default-features = true }
 openssl = { version = "0.10", features = ["vendored"] }
 
 [dev-dependencies]
-crypto_lib = { package = "zksync_crypto", path = "../../core/lib/crypto" }
+zksync_crypto = { package = "zksync_crypto", git = "https://github.com/matter-labs/zksync.git" }
 
 [profile.release]
 # Tell `rustc` to optimize for small code size.

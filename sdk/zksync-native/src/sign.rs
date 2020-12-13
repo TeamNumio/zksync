@@ -17,7 +17,6 @@ use franklin_crypto::{
 };
 
 use crate::utils::{pub_key_hash, rescue_hash_tx_msg};
-// use crypto_lib::public_key_from_private;
 use franklin_crypto::bellman::pairing::ff::{PrimeField, PrimeFieldRepr};
 use sha2::{Digest, Sha256};
 use zksync_types::PubKeyHash;
