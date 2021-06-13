@@ -1,6 +1,6 @@
 {
     "name": "@teamnumio/zksync",
-    "version": "0.0.27",
+    "version": "0.0.28",
     "license": "MIT",
     "publishConfig": {
         "registry": "https://npm.pkg.github.com/TeamNumio"
@@ -12,7 +12,7 @@
     "main": "build/index.js",
     "types": "build/index.d.ts",
     "dependencies": {
-        "@teamnumio/react-native-zksync": "0.0.2",
+        "@teamnumio/react-native-zksync": "0.0.3",
         "axios": "^0.21.1",
         "websocket": "^1.0.34",
         "websocket-as-promised": "^0.10.1"
@@ -42,7 +42,7 @@
     "scripts": {
         "lint:ts": "tslint -c tslint.json {examples,test,src}/**/*.ts",
         "lint:ts-fix": "tslint -c tslint.json --fix {examples,test,src}/**/*.ts",
-        "tests": "mocha -r ts-node/register tests/**/*.test.ts",
+        "test": "mocha -r ts-node/register tests/**/*.test.ts",
         "fmt": "prettier --tab-width 4 --print-width 120 --parser typescript --write \"{src,tests,examples}/*.ts\"",
         "build": "tsc",
         "watch": "tsc --watch",
